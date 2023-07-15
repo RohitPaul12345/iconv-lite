@@ -1,5 +1,5 @@
 
-var request = require('request'),
+let request = require('request'),
     fs = require('fs'),
     path = require('path'),
     errTo = require('errto');
@@ -7,8 +7,8 @@ var request = require('request'),
 // Common utilities used in scripts.
 
 exports.getFile = function(url, cb) {
-    var sourceDataFolder = path.join(__dirname, "source-data");
-    var fullpath = path.join(sourceDataFolder, path.basename(url));
+    let sourceDataFolder = path.join(__dirname, "source-data");
+    let fullpath = path.join(sourceDataFolder, path.basename(url));
     fs.readFile(fullpath, "utf8", function(err, text) {
         if (!err) return cb(null, text);
         if (err.code != "ENOENT") return cb(err);
@@ -37,8 +37,8 @@ exports.parseText = function(text, splitChar) {
 // sequences (arrays) - we emit them prepended with U+0FFF-(length-2).
 // U+0FFF was chosen because it's small and unassigned, as well as 32 chars before it
 function arrToStr(arr) {
-    var s = '';
-    for (var i = 0; i < arr.length; i++)
+    let s = '';
+    for (let i = 0; i < arr.length; i++)
         if (Array.isArray(arr[i])) {
             if (arr[i].length == 1)
                 s += arrToStr(arr[i]);
@@ -65,10 +65,10 @@ function arrToStr(arr) {
 // <str> - characters of the chunk.
 // <num> - increasing sequence of the length num, starting with prev character.
 exports.generateTable = function(dbcs, maxBytes) {
-    var minSeqLen = 4;
-    var table = [], range, block, seqLen;
-    var max = 1 << ((maxBytes || 2) * 8);
-    for (var i = 0x0000; i < max; i++)
+    let minSeqLen = 4;
+    let table = [], range, block, seqLen;
+    let max = 1 << ((maxBytes || 2) * 8);
+    for (let i = 0x0000; i < max; i++)
         if (dbcs[i] !== undefined) {
             if (dbcs[i-1] === undefined) { // Range started.
                 range = [i.toString(16)]; // Range[0] is starting address.
