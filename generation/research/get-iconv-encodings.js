@@ -3,15 +3,15 @@
 // Usage:
 // > iconv --list | node get-iconv-encodings.js > iconv-data.json
 
-var iconv = require('iconv'),
+let iconv = require('iconv'),
     crypto = require('crypto');
-var Buffer = require("safer-buffer").Buffer;
+let Buffer = require("safer-buffer").Buffer;
 
 
-var skipEncodings = {};
+let skipEncodings = {};
 
 
-var input = "";
+let input = "";
 process.stdin.setEncoding("utf8");
 process.stdin.on("data", function(data) {input += data});
 
@@ -33,14 +33,14 @@ process.stdin.on("end", function() {
         return true;
     });
 
-    var hashes = {};
+    let hashes = {};
 
     encodings = encodings.map(function(enc) {
         process.stderr.write("Checking "+enc+": ");
-        var hash = crypto.createHash("sha1");
+        let hash = crypto.createHash("sha1");
 
-        var converter = new iconv.Iconv(enc, "utf-8"), buf = Buffer.alloc(10);
-        var res = {
+        let converter = new iconv.Iconv(enc, "utf-8"), buf = Buffer.alloc(10);
+        let res = {
             enc: [enc],
             isDBCS: true,
             isSBCS: true,
@@ -92,10 +92,10 @@ process.stdin.resume();
 // Make all valid input combinations for a given encoding and call fn with it.
 // fn(valid, input, output)
 function forAllChars(converter, fn, origbuf, len) {
-    var buf = origbuf.slice(0, len);
-    for (var i = 0; i < 0x100; i++) {
+    let buf = origbuf.slice(0, len);
+    for (let i = 0; i < 0x100; i++) {
         buf[len-1] = i;
-        var res = undefined;
+        let res = undefined;
         try {
             res = converter.convert(buf);
         } catch (e) {
